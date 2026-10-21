@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lima atau Tiga? Pengenal Angka dari Tangan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1b1340;
+    --ink-2: #271a5c;
+    --paper: #f4f2fb;
+    --panel: #ffffff;
+    --violet: #6c4dff;
+    --violet-soft: #a794ff;
+    --lime: #c6f432;
+    --muted: #6a6590;
+    --line: #ddd8f0;
+    --ok: #3ddc97;
+    --bad: #ff6b86;
+    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); line-height: 1.55; }
+
+  /* ---------- Kepala halaman ---------- */
+  .hero { background: var(--ink); color: #fff; padding: 44px 20px 120px; }
+  .wrap { max-width: 1020px; margin: 0 auto; }
+  .hero h1 {
+    font-family: var(--display); font-weight: 800; letter-spacing: -0.035em; line-height: .98;
+    font-size: clamp(2.6rem, 8vw, 4.8rem); margin: 0 0 14px;
+  }
+  .hero p { margin: 0; max-width: 52ch; color: #c9c2ee; font-size: 1.05rem; }
+
+  /* ---------- Tata letak ---------- */
+  .stage {
+    max-width: 1020px; margin: -84px auto 0; padding: 0 20px 56px;
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 20px; align-items: stretch;
+  }
+  @media (max-width: 800px) { .stage { grid-template-columns: 1fr; } }
+
+  .card { border-radius: 24px; padding: 22px; }
+  .input-card { background: var(--panel); box-shadow: 0 18px 40px -22px rgba(27, 19, 64, .45); }
+  .result-card { background: var(--ink-2); color: #fff; display: flex; flex-direction: column; box-shadow: 0 18px 40px -22px rgba(27, 19, 64, .6); }
+
+  /* ---------- Tab ---------- */
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: #ede9fa; padding: 4px; border-radius: 999px; margin-bottom: 18px; }
+  .tabs button {
+    font: inherit; font-weight: 700; padding: 11px 10px; border: 0; border-radius: 999px;
+    background: transparent; color: var(--muted); cursor: pointer; transition: background .15s, color .15s;
+  }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: #fff; }
+  .tabs button:not([aria-selected="true"]):hover { color: var(--ink); }
+  .pane[hidden] { display: none; }
+
+  /* ---------- Bingkai kamera / gambar ---------- */
+  .frame { position: relative; width: 100%; max-width: 440px; margin: 0 auto 18px; }
+  .view {
+    aspect-ratio: 1 / 1; width: 100%; background: #120c2e; border-radius: 18px;
+    display: grid; place-items: center; overflow: hidden;
+  }
+  .view canvas, .view img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .view .placeholder { color: #9d95c9; text-align: center; padding: 0 32px; font-size: .95rem; }
+  .view .placeholder svg { display: block; margin: 0 auto 12px; opacity: .8; }
+  .c { position: absolute; width: 28px; height: 28px; border: 3px solid var(--lime); pointer-events: none; z-index: 2; }
+  .c.tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; border-top-left-radius: 10px; }
+  .c.tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; border-top-right-radius: 10px; }
+  .c.bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; border-bottom-left-radius: 10px; }
+  .c.br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; border-bottom-right-radius: 10px; }
+  .live {
+    position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 3;
+    display: inline-flex; align-items: center; gap: 7px; padding: 4px 12px 4px 10px; border-radius: 999px;
+    background: rgba(18, 12, 46, .72); color: #fff; font-size: .8rem; font-weight: 700; backdrop-filter: blur(4px);
+  }
+  .live[hidden] { display: none; }
+  .live i { width: 8px; height: 8px; border-radius: 50%; background: var(--bad); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .35; } }
+
+  /* ---------- Tombol ---------- */
+  .row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    font: inherit; font-weight: 700; padding: 12px 24px; border-radius: 999px; border: 2px solid var(--ink);
+    background: var(--lime); color: var(--ink); cursor: pointer; transition: transform .12s;
+  }
+  .btn:hover:not(:disabled) { transform: translateY(-1px); }
+  .btn.secondary { background: transparent; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn:focus-visible, .tabs button:focus-visible, .drop:focus-within { outline: 3px solid var(--violet); outline-offset: 3px; }
+
+  .drop {
+    position: relative; display: block; text-align: center; cursor: pointer; border: 2px dashed var(--violet-soft);
+    border-radius: 16px; padding: 16px; color: var(--muted); transition: background .15s, border-color .15s;
+  }
+  .drop.over { background: #efeaff; border-color: var(--violet); color: var(--ink); }
+  .drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .drop strong { color: var(--violet); }
+
+  /* ---------- Hasil ---------- */
+  .result-card h2 { margin: 0; font-size: .95rem; font-weight: 700; color: #b9b0e6; }
+  .pips { display: flex; align-items: flex-end; gap: 10px; height: 104px; margin: 18px 0 6px; }
+  .pip { flex: 1; border-radius: 999px; background: rgba(255, 255, 255, .1); transition: background .15s; }
+  .pip:nth-child(1) { height: 58%; }
+  .pip:nth-child(2) { height: 84%; }
+  .pip:nth-child(3) { height: 100%; }
+  .pip:nth-child(4) { height: 88%; }
+  .pip:nth-child(5) { height: 68%; }
+  .pip.on { background: var(--lime); }
+
+  .big {
+    font-family: var(--display); font-weight: 800; letter-spacing: -0.05em; line-height: .9;
+    font-size: clamp(6rem, 17vw, 9.5rem); color: var(--lime); margin: 4px 0 0; min-height: .9em;
+  }
+  .big.idle { color: rgba(255, 255, 255, .22); }
+  .word { font-family: var(--display); font-weight: 700; font-size: 1.5rem; margin: 6px 0 2px; min-height: 1.4em; }
+  .conf { margin: 0 0 22px; color: #b9b0e6; min-height: 1.55em; }
+
+  .bars { display: grid; gap: 13px; }
+  .bar-head { display: flex; justify-content: space-between; font-weight: 500; font-size: .93rem; margin-bottom: 5px; }
+  .track { height: 10px; background: rgba(255, 255, 255, .12); border-radius: 999px; overflow: hidden; }
+  .fill { height: 100%; width: 0; border-radius: 999px; background: var(--violet-soft); transition: width .12s linear, background .15s; }
+  .fill.top { background: var(--lime); }
+
+  #status {
+    margin-top: auto; padding-top: 16px; font-size: .9rem; color: #c9c2ee;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  #status::before {
+    content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; margin-top: 7px; background: #7d75a8;
+  }
+  #status.ok::before { background: var(--ok); }
+  #status.error { color: #ffd0d9; }
+  #status.error::before { background: var(--bad); }
+  .divider { height: 1px; background: rgba(255, 255, 255, .12); margin: 22px 0 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fill, .pip, .btn, .tabs button, .drop { transition: none; }
+    .live i { animation: none; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <h1>Lima atau Tiga?</h1>
+    <p>Tunjukkan tangan ke kamera atau unggah fotonya. Model mengenali apakah tangan membentuk angka 5 atau angka 3.</p>
+  </div>
+</header>
+
+<main class="stage">
+  <section class="card input-card" aria-label="Input">
+    <div class="tabs" role="tablist" aria-label="Sumber input">
+      <button role="tab" id="tab-camera" aria-selected="true" aria-controls="pane-camera">Kamera live</button>
+      <button role="tab" id="tab-upload" aria-selected="false" aria-controls="pane-upload">Unggah gambar</button>
+    </div>
+
+    <div class="pane" id="pane-camera" role="tabpanel" aria-labelledby="tab-camera">
+      <div class="frame">
+        <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
+        <span class="live" id="live" hidden><i></i>Live</span>
+        <div class="view" id="webcam-container"></div>
+      </div>
+      <div class="row">
+        <button class="btn" id="btn-start" type="button">Mulai kamera</button>
+        <button class="btn secondary" id="btn-stop" type="button" disabled>Hentikan</button>
+      </div>
+    </div>
+
+    <div class="pane" id="pane-upload" role="tabpanel" aria-labelledby="tab-upload" hidden>
+      <div class="frame">
+        <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
+        <div class="view" id="upload-view"></div>
+      </div>
+      <label class="drop" id="drop">
+        <input type="file" id="file" accept="image/*">
+        <strong>Pilih gambar</strong> atau seret dan lepas ke sini
+      </label>
+    </div>
+  </section>
+
+  <aside class="card result-card" aria-live="polite" aria-label="Hasil prediksi">
+    <h2>Hasil prediksi</h2>
+    <div class="pips" id="pips" aria-hidden="true">
+      <span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span>
+    </div>
+    <div class="big idle" id="big">–</div>
+    <div class="word" id="word"></div>
+    <p class="conf" id="conf">Menunggu input.</p>
+    <div class="bars" id="bars"></div>
+    <div class="divider"></div>
+    <div id="status">Model belum dimuat.</div>
+  </aside>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.7.4/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+<script>
+  // Folder model hasil ekspor Teachable Machine (model.json, metadata.json, weights.bin)
+  const MODEL_URL = "./my_model/";
+  // Di bawah batas ini hasil dianggap tidak yakin
+  const THRESHOLD = 0.6;
+  // Tampilan tiap label model. pips = jumlah jari yang menyala.
+  const LABELS = {
+    "LIMA":     { digit: "5", word: "Lima", bar: "Angka 5", pips: 5 },
+    "TIGA":     { digit: "3", word: "Tiga", bar: "Angka 3", pips: 3 },
+    "NO INPUT": { digit: "–", word: "Tidak ada tangan", bar: "Tidak ada tangan", pips: 0, none: true }
+  };
+  const info = (c) => LABELS[c] || { digit: c, word: "", bar: c, pips: 0 };
+
+  const CAM_ICON = '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.6"/></svg>';
+  const IMG_ICON = '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-9 9"/></svg>';
+  const camPlaceholder = (t) => '<div class="placeholder">' + CAM_ICON + t + '</div>';
+  const imgPlaceholder = '<div class="placeholder">' + IMG_ICON + 'Pratinjau gambar muncul di sini.</div>';
+
+  let model = null, webcam = null, rafId = null, running = false;
+  let barFills = [], barValues = [];
+
+  const $ = (id) => document.getElementById(id);
+  const statusEl = $("status");
+  const pct = (x, d) => (x * 100).toLocaleString("id-ID", { minimumFractionDigits: d, maximumFractionDigits: d });
+
+  function setStatus(msg, kind) {
+    statusEl.textContent = msg;
+    statusEl.className = kind || "";
+  }
+
+  function setPips(n) {
+    document.querySelectorAll(".pip").forEach((p, i) => {
+      // 5 jari: semua menyala. 3 jari: telunjuk, jari tengah, jari manis.
+      const on = n === 5 ? true : n === 3 ? (i >= 1 && i <= 3) : false;
+      p.classList.toggle("on", on);
+    });
+  }
+
+  async function loadModel() {
+    if (model) return model;
+    setStatus("Memuat model…");
+    try {
+      model = await tmImage.load(MODEL_URL + "model.json", MODEL_URL + "metadata.json");
+    } catch (e) {
+      console.error(e);
+      setStatus("Model gagal dimuat. Pastikan folder my_model/ ada di samping file ini dan halaman dibuka lewat server lokal (http://localhost), bukan file://.", "error");
+      throw e;
+    }
+    buildBars(model.getClassLabels());
+    setStatus("Model siap.", "ok");
+    return model;
+  }
+
+  function buildBars(labels) {
+    const box = $("bars");
+    box.innerHTML = "";
+    barFills = []; barValues = [];
+    labels.forEach((name) => {
+      const wrap = document.createElement("div");
+      const head = document.createElement("div");
+      head.className = "bar-head";
+      const n = document.createElement("span"); n.textContent = info(name).bar;
+      const v = document.createElement("span"); v.textContent = "0%";
+      head.append(n, v);
+      const track = document.createElement("div"); track.className = "track";
+      const fill = document.createElement("div"); fill.className = "fill";
+      track.appendChild(fill);
+      wrap.append(head, track);
+      box.appendChild(wrap);
+      barFills.push(fill); barValues.push(v);
+    });
+  }
+
+  function showPrediction(pred) {
+    let top = 0;
+    pred.forEach((p, i) => { if (p.probability > pred[top].probability) top = i; });
+    pred.forEach((p, i) => {
+      barFills[i].style.width = (p.probability * 100).toFixed(1) + "%";
+      barFills[i].classList.toggle("top", i === top);
+      barValues[i].textContent = pct(p.probability, 0) + "%";
+    });
+
+    const p = pred[top], meta = info(p.className);
+    const big = $("big");
+    if (p.probability < THRESHOLD) {
+      big.textContent = "?"; big.classList.add("idle");
+      $("word").textContent = "Belum yakin";
+      $("conf").textContent = "Dekatkan tangan dan pastikan jari terlihat jelas.";
+      setPips(0);
+    } else if (meta.none) {
+      big.textContent = meta.digit; big.classList.add("idle");
+      $("word").textContent = meta.word;
+      $("conf").textContent = "Tunjukkan tangan ke kamera.";
+      setPips(0);
+    } else {
+      big.textContent = meta.digit; big.classList.remove("idle");
+      $("word").textContent = meta.word;
+      $("conf").textContent = "Keyakinan " + pct(p.probability, 1) + "%";
+      setPips(meta.pips);
+    }
+  }
+
+  function resetResult() {
+    $("big").textContent = "–"; $("big").classList.add("idle");
+    $("word").textContent = "";
+    $("conf").textContent = "Menunggu input.";
+    setPips(0);
+    barFills.forEach((f) => { f.style.width = "0"; f.classList.remove("top"); });
+    barValues.forEach((v) => { v.textContent = "0%"; });
+  }
+
+  /* ---------- Kamera live ---------- */
+  function cameraErrorMessage(e) {
+    const n = e && e.name;
+    if (n === "NotAllowedError" || n === "SecurityError")
+      return "Akses kamera ditolak. Klik ikon gembok atau kamera di sebelah kiri address bar, pilih Izinkan, lalu muat ulang halaman.";
+    if (n === "NotFoundError" || n === "OverconstrainedError")
+      return "Kamera tidak ditemukan. Pastikan webcam terpasang dan aktif.";
+    if (n === "NotReadableError" || n === "AbortError")
+      return "Kamera sedang dipakai aplikasi lain (Zoom, Meet, Teams, dan sejenisnya). Tutup aplikasi itu lalu tekan Mulai kamera lagi.";
+    if (!navigator.mediaDevices || !window.isSecureContext)
+      return "Browser memblokir kamera di alamat ini. Buka lewat http://localhost atau https, bukan alamat IP atau file.";
+    return "Kamera tidak bisa dibuka (" + (n || "error tidak dikenal") + ").";
+  }
+
+  async function startCamera() {
+    if (running) return;
+    $("btn-start").disabled = true;
+    try {
+      await loadModel();
+    } catch (e) {
+      $("btn-start").disabled = false;
+      return; // pesan sudah ditampilkan oleh loadModel
+    }
+    try {
+      setStatus("Meminta akses kamera… klik Izinkan jika browser bertanya.");
+      webcam = new tmImage.Webcam(400, 400, true); // lebar, tinggi, cermin
+      await webcam.setup();
+      await webcam.play();
+    } catch (e) {
+      console.error(e);
+      setStatus(cameraErrorMessage(e), "error");
+      $("btn-start").disabled = false;
+      webcam = null;
+      return;
+    }
+    const box = $("webcam-container");
+    box.innerHTML = "";
+    box.appendChild(webcam.canvas);
+    running = true;
+    $("live").hidden = false;
+    $("btn-stop").disabled = false;
+    setStatus("Kamera aktif.", "ok");
+    rafId = requestAnimationFrame(loop);
+  }
+
+  async function loop() {
+    if (!running) return;
+    webcam.update();
+    const pred = await model.predict(webcam.canvas);
+    if (running) showPrediction(pred);
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function stopCamera() {
+    running = false;
+    if (rafId) cancelAnimationFrame(rafId);
+    if (webcam) { webcam.stop(); webcam = null; }
+    $("webcam-container").innerHTML = camPlaceholder("Kamera dihentikan. Tekan “Mulai kamera” untuk lanjut.");
+    $("live").hidden = true;
+    $("btn-start").disabled = false;
+    $("btn-stop").disabled = true;
+    resetResult();
+    if (model) setStatus("Model siap.", "ok");
+  }
+
+  /* ---------- Unggah gambar ---------- */
+  async function handleFile(file) {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setStatus("File harus berupa gambar (JPG, PNG, atau WebP).", "error");
+      return;
+    }
+    const img = new Image();
+    img.alt = "Gambar yang diunggah";
+    img.onload = async () => {
+      const box = $("upload-view");
+      box.innerHTML = "";
+      box.appendChild(img);
+      try {
+        await loadModel();
+        showPrediction(await model.predict(img));
+        setStatus("Gambar selesai dianalisis.", "ok");
+      } catch (e) { /* pesan sudah ditampilkan oleh loadModel */ }
+    };
+    img.onerror = () => setStatus("Gambar tidak bisa dibaca. Coba file lain.", "error");
+    img.src = URL.createObjectURL(file);
+  }
+
+  /* ---------- Tab ---------- */
+  function selectTab(which) {
+    const cam = which === "camera";
+    $("tab-camera").setAttribute("aria-selected", cam);
+    $("tab-upload").setAttribute("aria-selected", !cam);
+    $("pane-camera").hidden = !cam;
+    $("pane-upload").hidden = cam;
+    if (!cam && running) stopCamera();
+    resetResult();
+  }
+
+  $("webcam-container").innerHTML = camPlaceholder("Mengaktifkan kamera… klik Izinkan jika browser bertanya.");
+  $("upload-view").innerHTML = imgPlaceholder;
+  setPips(0);
+  buildBars(["LIMA", "TIGA", "NO INPUT"]); // kerangka bar sebelum model dimuat
+
+  $("tab-camera").addEventListener("click", () => selectTab("camera"));
+  $("tab-upload").addEventListener("click", () => selectTab("upload"));
+  $("btn-start").addEventListener("click", startCamera);
+  $("btn-stop").addEventListener("click", stopCamera);
+  $("file").addEventListener("change", (e) => handleFile(e.target.files[0]));
+
+  // Kamera dicoba aktif otomatis saat halaman dibuka
+  window.addEventListener("load", () => {
+    if (location.protocol === "file:") {
+      $("webcam-container").innerHTML = camPlaceholder("Kamera belum aktif.");
+      setStatus("Halaman dibuka lewat file://, model tidak bisa dimuat. Jalankan server lokal dulu (lihat MULAI.txt), lalu buka http://localhost:8000.", "error");
+      return;
+    }
+    startCamera();
+  });
+
+  const drop = $("drop");
+  ["dragenter", "dragover"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+  drop.addEventListener("drop", (e) => handleFile(e.dataTransfer.files[0]));
+</script>
+</body>
+</html>

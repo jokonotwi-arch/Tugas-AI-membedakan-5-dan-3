@@ -1,0 +1,12 @@
+CARA MENJALANKAN
+1. Ekstrak seluruh isi ZIP ini (jangan dibuka langsung dari dalam ZIP).
+2. Buka terminal/CMD di folder yang berisi index.html, lalu jalankan:
+       python -m http.server 8000
+   (alternatif: ekstensi "Live Server" di VS Code)
+3. Buka di browser: http://localhost:8000
+4. Klik "Izinkan" saat browser meminta akses kamera.
+
+Jika kamera tidak aktif:
+- Klik ikon gembok/kamera di address bar -> Kamera: Izinkan -> muat ulang.
+- Tutup aplikasi lain yang memakai kamera (Zoom, Meet, Teams).
+- Jangan buka lewat file:// atau alamat IP; pakai http://localhost.
