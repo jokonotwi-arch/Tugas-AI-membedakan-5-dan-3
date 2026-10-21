@@ -3,197 +3,208 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lima atau Tiga? Pengenal Angka dari Tangan</title>
+<title>Tangan Ini Angka Berapa? Pengenal Angka 5 dan 3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #1b1340;
-    --ink-2: #271a5c;
-    --paper: #f4f2fb;
+    --ink: #101828;
+    --bg: #f2f4f7;
     --panel: #ffffff;
-    --violet: #6c4dff;
-    --violet-soft: #a794ff;
-    --lime: #c6f432;
-    --muted: #6a6590;
-    --line: #ddd8f0;
-    --ok: #3ddc97;
-    --bad: #ff6b86;
-    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-    --body: "DM Sans", "Segoe UI", system-ui, sans-serif;
+    --muted: #5b6577;
+    --sun: #ffd23f;
+    --blue: #2f6bff;
+    --gray: #dfe3ea;
+    --ok: #12b76a;
+    --bad: #f04438;
+    --display: "Unbounded", "Segoe UI", system-ui, sans-serif;
+    --body: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+    --shadow: 7px 7px 0 var(--ink);
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); line-height: 1.55; }
-
-  /* ---------- Kepala halaman ---------- */
-  .hero { background: var(--ink); color: #fff; padding: 44px 20px 120px; }
-  .wrap { max-width: 1020px; margin: 0 auto; }
-  .hero h1 {
-    font-family: var(--display); font-weight: 800; letter-spacing: -0.035em; line-height: .98;
-    font-size: clamp(2.6rem, 8vw, 4.8rem); margin: 0 0 14px;
+  body {
+    margin: 0; color: var(--ink); font-family: var(--body); line-height: 1.55;
+    background-color: var(--bg);
+    background-image: radial-gradient(#cfd5df 1.2px, transparent 1.2px);
+    background-size: 22px 22px;
   }
-  .hero p { margin: 0; max-width: 52ch; color: #c9c2ee; font-size: 1.05rem; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- Kepala ---------- */
+  header { padding: 38px 0 30px; }
+  .chip {
+    display: inline-block; font-weight: 700; font-size: .82rem; padding: 5px 14px; margin-bottom: 16px;
+    border: 2px solid var(--ink); border-radius: 999px; background: var(--panel);
+  }
+  h1 {
+    font-family: var(--display); font-weight: 800; letter-spacing: -0.04em; line-height: 1.04;
+    font-size: clamp(1.9rem, 5.2vw, 3.5rem); margin: 0 0 14px; max-width: 16ch;
+  }
+  header p { margin: 0; max-width: 54ch; color: var(--muted); font-size: 1.05rem; }
 
   /* ---------- Tata letak ---------- */
-  .stage {
-    max-width: 1020px; margin: -84px auto 0; padding: 0 20px 56px;
-    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 20px; align-items: stretch;
-  }
-  @media (max-width: 800px) { .stage { grid-template-columns: 1fr; } }
+  .stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 30px; padding-bottom: 60px; align-items: stretch; }
+  @media (max-width: 800px) { .stage { grid-template-columns: 1fr; gap: 26px; } }
 
-  .card { border-radius: 24px; padding: 22px; }
-  .input-card { background: var(--panel); box-shadow: 0 18px 40px -22px rgba(27, 19, 64, .45); }
-  .result-card { background: var(--ink-2); color: #fff; display: flex; flex-direction: column; box-shadow: 0 18px 40px -22px rgba(27, 19, 64, .6); }
+  .card {
+    border: 3px solid var(--ink); border-radius: 28px; box-shadow: var(--shadow);
+    padding: 22px; min-width: 0;
+  }
+  .input-card { background: var(--panel); }
 
   /* ---------- Tab ---------- */
-  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: #ede9fa; padding: 4px; border-radius: 999px; margin-bottom: 18px; }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; border: 3px solid var(--ink); border-radius: 999px; overflow: hidden; margin-bottom: 20px; }
   .tabs button {
-    font: inherit; font-weight: 700; padding: 11px 10px; border: 0; border-radius: 999px;
-    background: transparent; color: var(--muted); cursor: pointer; transition: background .15s, color .15s;
+    font: inherit; font-weight: 700; padding: 10px 8px; border: 0; background: var(--panel);
+    color: var(--ink); cursor: pointer;
   }
+  .tabs button + button { border-left: 3px solid var(--ink); }
   .tabs button[aria-selected="true"] { background: var(--ink); color: #fff; }
-  .tabs button:not([aria-selected="true"]):hover { color: var(--ink); }
+  .tabs button:not([aria-selected="true"]):hover { background: var(--gray); }
   .pane[hidden] { display: none; }
 
   /* ---------- Bingkai kamera / gambar ---------- */
   .frame { position: relative; width: 100%; max-width: 440px; margin: 0 auto 18px; }
   .view {
-    aspect-ratio: 1 / 1; width: 100%; background: #120c2e; border-radius: 18px;
+    aspect-ratio: 1 / 1; width: 100%; background: var(--ink); border-radius: 20px; border: 3px solid var(--ink);
     display: grid; place-items: center; overflow: hidden;
   }
   .view canvas, .view img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .view .placeholder { color: #9d95c9; text-align: center; padding: 0 32px; font-size: .95rem; }
-  .view .placeholder svg { display: block; margin: 0 auto 12px; opacity: .8; }
-  .c { position: absolute; width: 28px; height: 28px; border: 3px solid var(--lime); pointer-events: none; z-index: 2; }
-  .c.tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; border-top-left-radius: 10px; }
-  .c.tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; border-top-right-radius: 10px; }
-  .c.bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; border-bottom-left-radius: 10px; }
-  .c.br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; border-bottom-right-radius: 10px; }
+  .view .placeholder { color: #aab3c5; text-align: center; padding: 0 30px; font-size: .95rem; }
+  .view .placeholder svg { display: block; margin: 0 auto 12px; }
+
   .live {
-    position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 3;
-    display: inline-flex; align-items: center; gap: 7px; padding: 4px 12px 4px 10px; border-radius: 999px;
-    background: rgba(18, 12, 46, .72); color: #fff; font-size: .8rem; font-weight: 700; backdrop-filter: blur(4px);
+    position: absolute; top: 14px; left: 14px; z-index: 3; display: inline-flex; align-items: center; gap: 7px;
+    padding: 3px 12px 3px 9px; border: 2px solid var(--ink); border-radius: 999px; background: var(--panel);
+    font-size: .8rem; font-weight: 700;
   }
   .live[hidden] { display: none; }
-  .live i { width: 8px; height: 8px; border-radius: 50%; background: var(--bad); animation: pulse 1.4s ease-in-out infinite; }
-  @keyframes pulse { 50% { opacity: .35; } }
+  .live i { width: 9px; height: 9px; border-radius: 50%; background: var(--bad); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .3; } }
+
+  .tag {
+    position: absolute; left: 14px; bottom: 14px; z-index: 3; max-width: calc(100% - 28px);
+    padding: 5px 14px; border: 2px solid var(--ink); border-radius: 999px; font-weight: 700; font-size: .92rem;
+    background: var(--gray); color: var(--ink);
+  }
+  .tag[hidden] { display: none; }
+  .tag[data-s="lima"] { background: var(--sun); }
+  .tag[data-s="tiga"] { background: var(--blue); color: #fff; }
 
   /* ---------- Tombol ---------- */
-  .row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
   .btn {
-    font: inherit; font-weight: 700; padding: 12px 24px; border-radius: 999px; border: 2px solid var(--ink);
-    background: var(--lime); color: var(--ink); cursor: pointer; transition: transform .12s;
+    font: inherit; font-weight: 700; padding: 11px 24px; border: 3px solid var(--ink); border-radius: 999px;
+    background: var(--sun); color: var(--ink); cursor: pointer; box-shadow: 3px 3px 0 var(--ink);
+    transition: transform .1s, box-shadow .1s;
   }
-  .btn:hover:not(:disabled) { transform: translateY(-1px); }
-  .btn.secondary { background: transparent; }
-  .btn:disabled { opacity: .45; cursor: not-allowed; }
-  .btn:focus-visible, .tabs button:focus-visible, .drop:focus-within { outline: 3px solid var(--violet); outline-offset: 3px; }
+  .btn:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+  .btn:active:not(:disabled) { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+  .btn.secondary { background: var(--panel); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: 3px 3px 0 var(--ink); }
+  .btn:focus-visible, .tabs button:focus-visible, .drop:focus-within { outline: 3px solid var(--blue); outline-offset: 3px; }
 
   .drop {
-    position: relative; display: block; text-align: center; cursor: pointer; border: 2px dashed var(--violet-soft);
-    border-radius: 16px; padding: 16px; color: var(--muted); transition: background .15s, border-color .15s;
+    position: relative; display: block; text-align: center; cursor: pointer; color: var(--muted);
+    border: 3px dashed var(--ink); border-radius: 18px; padding: 16px; transition: background .15s;
   }
-  .drop.over { background: #efeaff; border-color: var(--violet); color: var(--ink); }
+  .drop.over { background: #e9f0ff; color: var(--ink); }
   .drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-  .drop strong { color: var(--violet); }
-
-  /* ---------- Hasil ---------- */
-  .result-card h2 { margin: 0; font-size: .95rem; font-weight: 700; color: #b9b0e6; }
-  .pips { display: flex; align-items: flex-end; gap: 10px; height: 104px; margin: 18px 0 6px; }
-  .pip { flex: 1; border-radius: 999px; background: rgba(255, 255, 255, .1); transition: background .15s; }
-  .pip:nth-child(1) { height: 58%; }
-  .pip:nth-child(2) { height: 84%; }
-  .pip:nth-child(3) { height: 100%; }
-  .pip:nth-child(4) { height: 88%; }
-  .pip:nth-child(5) { height: 68%; }
-  .pip.on { background: var(--lime); }
-
-  .big {
-    font-family: var(--display); font-weight: 800; letter-spacing: -0.05em; line-height: .9;
-    font-size: clamp(6rem, 17vw, 9.5rem); color: var(--lime); margin: 4px 0 0; min-height: .9em;
-  }
-  .big.idle { color: rgba(255, 255, 255, .22); }
-  .word { font-family: var(--display); font-weight: 700; font-size: 1.5rem; margin: 6px 0 2px; min-height: 1.4em; }
-  .conf { margin: 0 0 22px; color: #b9b0e6; min-height: 1.55em; }
-
-  .bars { display: grid; gap: 13px; }
-  .bar-head { display: flex; justify-content: space-between; font-weight: 500; font-size: .93rem; margin-bottom: 5px; }
-  .track { height: 10px; background: rgba(255, 255, 255, .12); border-radius: 999px; overflow: hidden; }
-  .fill { height: 100%; width: 0; border-radius: 999px; background: var(--violet-soft); transition: width .12s linear, background .15s; }
-  .fill.top { background: var(--lime); }
+  .drop strong { color: var(--ink); text-decoration: underline; text-decoration-thickness: 3px; text-decoration-color: var(--sun); text-underline-offset: 3px; }
 
   #status {
-    margin-top: auto; padding-top: 16px; font-size: .9rem; color: #c9c2ee;
-    display: flex; gap: 10px; align-items: flex-start;
+    display: flex; gap: 10px; align-items: flex-start; margin-top: 20px; padding-top: 16px;
+    border-top: 2px solid var(--gray); font-size: .9rem; color: var(--muted);
   }
-  #status::before {
-    content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; margin-top: 7px; background: #7d75a8;
-  }
+  #status::before { content: ""; flex: none; width: 11px; height: 11px; border-radius: 50%; margin-top: 6px; background: #98a2b3; border: 2px solid var(--ink); }
   #status.ok::before { background: var(--ok); }
-  #status.error { color: #ffd0d9; }
+  #status.error { color: #b42318; }
   #status.error::before { background: var(--bad); }
-  .divider { height: 1px; background: rgba(255, 255, 255, .12); margin: 22px 0 0; }
+
+  /* ---------- Kartu hasil: warna mengikuti angka ---------- */
+  .result-card {
+    --card-bg: var(--gray); --card-ink: var(--ink);
+    background: var(--card-bg); color: var(--card-ink); display: flex; flex-direction: column;
+    transition: background .2s, color .2s;
+  }
+  .result-card[data-state="lima"] { --card-bg: var(--sun); }
+  .result-card[data-state="tiga"] { --card-bg: var(--blue); --card-ink: #fff; }
+
+  .result-card h2 { margin: 0; font-size: .92rem; font-weight: 700; opacity: .75; }
+  .big {
+    font-family: var(--display); font-weight: 800; letter-spacing: -0.06em; line-height: .95;
+    font-size: clamp(7rem, 20vw, 12rem); margin: 10px 0 0; min-height: .95em;
+  }
+  .big.idle { opacity: .28; }
+  .big.pop { animation: pop .28s ease-out; }
+  @keyframes pop { 0% { transform: scale(.82); } 70% { transform: scale(1.06); } 100% { transform: scale(1); } }
+  .word { font-family: var(--display); font-weight: 500; font-size: 1.35rem; margin: 8px 0 2px; min-height: 1.5em; }
+  .conf { margin: 0 0 26px; opacity: .85; min-height: 1.55em; }
+
+  .bars { display: grid; gap: 14px; margin-top: auto; }
+  .bar-head { display: flex; justify-content: space-between; font-weight: 700; font-size: .92rem; margin-bottom: 5px; }
+  .track { height: 16px; border: 3px solid var(--card-ink); border-radius: 999px; overflow: hidden; }
+  .fill { height: 100%; width: 0; background: var(--card-ink); opacity: .4; transition: width .12s linear, opacity .15s; }
+  .fill.top { opacity: 1; }
 
   @media (prefers-reduced-motion: reduce) {
-    .fill, .pip, .btn, .tabs button, .drop { transition: none; }
-    .live i { animation: none; }
+    .fill, .btn, .result-card { transition: none; }
+    .live i, .big.pop { animation: none; }
   }
 </style>
 </head>
 <body>
-<header class="hero">
-  <div class="wrap">
-    <h1>Lima atau Tiga?</h1>
-    <p>Tunjukkan tangan ke kamera atau unggah fotonya. Model mengenali apakah tangan membentuk angka 5 atau angka 3.</p>
-  </div>
-</header>
+<div class="wrap">
+  <header>
+    <span class="chip">5 atau 3 · pengenal tangan</span>
+    <h1>Tangan ini angka berapa?</h1>
+    <p>Tunjukkan tangan ke kamera atau unggah fotonya. Model membedakan apakah tangan membentuk angka 5 atau angka 3.</p>
+  </header>
 
-<main class="stage">
-  <section class="card input-card" aria-label="Input">
-    <div class="tabs" role="tablist" aria-label="Sumber input">
-      <button role="tab" id="tab-camera" aria-selected="true" aria-controls="pane-camera">Kamera live</button>
-      <button role="tab" id="tab-upload" aria-selected="false" aria-controls="pane-upload">Unggah gambar</button>
-    </div>
-
-    <div class="pane" id="pane-camera" role="tabpanel" aria-labelledby="tab-camera">
-      <div class="frame">
-        <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
-        <span class="live" id="live" hidden><i></i>Live</span>
-        <div class="view" id="webcam-container"></div>
+  <main class="stage">
+    <section class="card input-card" aria-label="Input">
+      <div class="tabs" role="tablist" aria-label="Sumber input">
+        <button role="tab" id="tab-camera" aria-selected="true" aria-controls="pane-camera">Kamera live</button>
+        <button role="tab" id="tab-upload" aria-selected="false" aria-controls="pane-upload">Unggah gambar</button>
       </div>
-      <div class="row">
-        <button class="btn" id="btn-start" type="button">Mulai kamera</button>
-        <button class="btn secondary" id="btn-stop" type="button" disabled>Hentikan</button>
-      </div>
-    </div>
 
-    <div class="pane" id="pane-upload" role="tabpanel" aria-labelledby="tab-upload" hidden>
-      <div class="frame">
-        <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
-        <div class="view" id="upload-view"></div>
+      <div class="pane" id="pane-camera" role="tabpanel" aria-labelledby="tab-camera">
+        <div class="frame">
+          <span class="live" id="live" hidden><i></i>Live</span>
+          <div class="view" id="webcam-container"></div>
+          <span class="tag" id="tag-cam" hidden></span>
+        </div>
+        <div class="row">
+          <button class="btn" id="btn-start" type="button">Mulai kamera</button>
+          <button class="btn secondary" id="btn-stop" type="button" disabled>Hentikan</button>
+        </div>
       </div>
-      <label class="drop" id="drop">
-        <input type="file" id="file" accept="image/*">
-        <strong>Pilih gambar</strong> atau seret dan lepas ke sini
-      </label>
-    </div>
-  </section>
 
-  <aside class="card result-card" aria-live="polite" aria-label="Hasil prediksi">
-    <h2>Hasil prediksi</h2>
-    <div class="pips" id="pips" aria-hidden="true">
-      <span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span>
-    </div>
-    <div class="big idle" id="big">–</div>
-    <div class="word" id="word"></div>
-    <p class="conf" id="conf">Menunggu input.</p>
-    <div class="bars" id="bars"></div>
-    <div class="divider"></div>
-    <div id="status">Model belum dimuat.</div>
-  </aside>
-</main>
+      <div class="pane" id="pane-upload" role="tabpanel" aria-labelledby="tab-upload" hidden>
+        <div class="frame">
+          <div class="view" id="upload-view"></div>
+          <span class="tag" id="tag-up" hidden></span>
+        </div>
+        <label class="drop" id="drop">
+          <input type="file" id="file" accept="image/*">
+          <strong>Pilih gambar</strong> atau seret dan lepas ke sini
+        </label>
+      </div>
+
+      <div id="status">Model belum dimuat.</div>
+    </section>
+
+    <aside class="card result-card" id="result" data-state="idle" aria-live="polite" aria-label="Hasil prediksi">
+      <h2>Terbaca sebagai</h2>
+      <div class="big idle" id="big">–</div>
+      <div class="word" id="word"></div>
+      <p class="conf" id="conf">Menunggu input.</p>
+      <div class="bars" id="bars"></div>
+    </aside>
+  </main>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.7.4/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
@@ -202,21 +213,21 @@
   const MODEL_URL = "./my_model/";
   // Di bawah batas ini hasil dianggap tidak yakin
   const THRESHOLD = 0.6;
-  // Tampilan tiap label model. pips = jumlah jari yang menyala.
+  // Tampilan tiap label model (dicocokkan lewat nama, jadi urutan kelas di model tidak masalah)
   const LABELS = {
-    "LIMA":     { digit: "5", word: "Lima", bar: "Angka 5", pips: 5 },
-    "TIGA":     { digit: "3", word: "Tiga", bar: "Angka 3", pips: 3 },
-    "NO INPUT": { digit: "–", word: "Tidak ada tangan", bar: "Tidak ada tangan", pips: 0, none: true }
+    "LIMA":     { digit: "5", word: "Lima", bar: "Angka 5", state: "lima" },
+    "TIGA":     { digit: "3", word: "Tiga", bar: "Angka 3", state: "tiga" },
+    "NO INPUT": { digit: "–", word: "Tidak ada tangan", bar: "Tidak ada tangan", state: "none" }
   };
-  const info = (c) => LABELS[c] || { digit: c, word: "", bar: c, pips: 0 };
+  const info = (c) => LABELS[c] || { digit: c, word: c, bar: c, state: "none" };
 
-  const CAM_ICON = '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.6"/></svg>';
-  const IMG_ICON = '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-9 9"/></svg>';
+  const CAM_ICON = '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.6"/></svg>';
+  const IMG_ICON = '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-9 9"/></svg>';
   const camPlaceholder = (t) => '<div class="placeholder">' + CAM_ICON + t + '</div>';
   const imgPlaceholder = '<div class="placeholder">' + IMG_ICON + 'Pratinjau gambar muncul di sini.</div>';
 
   let model = null, webcam = null, rafId = null, running = false;
-  let barFills = [], barValues = [];
+  let barFills = [], barValues = [], lastDigit = "";
 
   const $ = (id) => document.getElementById(id);
   const statusEl = $("status");
@@ -227,12 +238,26 @@
     statusEl.className = kind || "";
   }
 
-  function setPips(n) {
-    document.querySelectorAll(".pip").forEach((p, i) => {
-      // 5 jari: semua menyala. 3 jari: telunjuk, jari tengah, jari manis.
-      const on = n === 5 ? true : n === 3 ? (i >= 1 && i <= 3) : false;
-      p.classList.toggle("on", on);
+  function setTag(text, state) {
+    ["tag-cam", "tag-up"].forEach((id) => {
+      const t = $(id);
+      t.hidden = !text;
+      t.textContent = text || "";
+      t.dataset.s = state || "";
     });
+  }
+
+  function setDisplay(state, digit, idle, word, conf) {
+    $("result").dataset.state = state;
+    const big = $("big");
+    big.textContent = digit;
+    big.classList.toggle("idle", idle);
+    if (digit !== lastDigit && !idle) {
+      big.classList.remove("pop"); void big.offsetWidth; big.classList.add("pop");
+    }
+    lastDigit = idle ? "" : digit;
+    $("word").textContent = word;
+    $("conf").textContent = conf;
   }
 
   async function loadModel() {
@@ -280,30 +305,21 @@
     });
 
     const p = pred[top], meta = info(p.className);
-    const big = $("big");
     if (p.probability < THRESHOLD) {
-      big.textContent = "?"; big.classList.add("idle");
-      $("word").textContent = "Belum yakin";
-      $("conf").textContent = "Dekatkan tangan dan pastikan jari terlihat jelas.";
-      setPips(0);
-    } else if (meta.none) {
-      big.textContent = meta.digit; big.classList.add("idle");
-      $("word").textContent = meta.word;
-      $("conf").textContent = "Tunjukkan tangan ke kamera.";
-      setPips(0);
+      setDisplay("unsure", "?", true, "Belum yakin", "Dekatkan tangan dan pastikan jari terlihat jelas.");
+      setTag("Belum yakin", "none");
+    } else if (meta.state === "none") {
+      setDisplay("none", "–", true, meta.word, "Tunjukkan tangan ke kamera.");
+      setTag(meta.word, "none");
     } else {
-      big.textContent = meta.digit; big.classList.remove("idle");
-      $("word").textContent = meta.word;
-      $("conf").textContent = "Keyakinan " + pct(p.probability, 1) + "%";
-      setPips(meta.pips);
+      setDisplay(meta.state, meta.digit, false, meta.word, "Keyakinan " + pct(p.probability, 1) + "%");
+      setTag(meta.word + " · " + pct(p.probability, 0) + "%", meta.state);
     }
   }
 
   function resetResult() {
-    $("big").textContent = "–"; $("big").classList.add("idle");
-    $("word").textContent = "";
-    $("conf").textContent = "Menunggu input.";
-    setPips(0);
+    setDisplay("idle", "–", true, "", "Menunggu input.");
+    setTag("");
     barFills.forEach((f) => { f.style.width = "0"; f.classList.remove("top"); });
     barValues.forEach((v) => { v.textContent = "0%"; });
   }
@@ -409,8 +425,7 @@
 
   $("webcam-container").innerHTML = camPlaceholder("Mengaktifkan kamera… klik Izinkan jika browser bertanya.");
   $("upload-view").innerHTML = imgPlaceholder;
-  setPips(0);
-  buildBars(["LIMA", "TIGA", "NO INPUT"]); // kerangka bar sebelum model dimuat
+  buildBars(["NO INPUT", "LIMA", "TIGA"]); // kerangka bar sebelum model dimuat
 
   $("tab-camera").addEventListener("click", () => selectTab("camera"));
   $("tab-upload").addEventListener("click", () => selectTab("upload"));
